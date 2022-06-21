@@ -25,10 +25,7 @@ return new class extends Migration
             $table->decimal('salary',8,2);
             $table->integer('manager_id')->nullable();
             $table->integer('department_id')->nullable();
-            // $table->foreign('job_id')->references('job_id')->on('jobs')->onDelete('cascade')->onUpdate('cascade');
-            // $table->foreign('department_id')->references('department_id')->on('departments')->onDelete('cascade')->onUpdate('cascade');
-            // $table->foreign('manager_id')->references('employee_id')->on('employees');
-             $table->timestamps();
+            $table->timestamps();
         });
     }
 

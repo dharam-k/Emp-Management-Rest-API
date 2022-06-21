@@ -48,6 +48,7 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
+            'profile_pic' => 'mimes:jpeg,bmp,png,jpg|required',
             'email' => 'required|string',
             'phone_number' => 'required|numeric',
             'hire_date' => 'required|string',
@@ -57,10 +58,18 @@ class EmployeeController extends Controller
             'department_id' => 'required|numeric'
         ]);
 
+        if( $request->hasFile( 'profile_pic' ) ) {
+            $destinationPath = storage_path( 'app/public/profile_pic' );
+            $file = $request->profile_pic;
+            $fileName = time() . '.'.$file->clientExtension();
+            $file->move( $destinationPath, $fileName );
+        }
+       
         
         Employee::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'profile_pic'=>$fileName,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'hire_date' =>$request->hire_date,
@@ -69,7 +78,6 @@ class EmployeeController extends Controller
             'manager_id' => $request->manager_id,
             'department_id' => $request->department_id,
         ]);
-
 
         return response()->json(['message'=> 'Employee has been created']);
     }

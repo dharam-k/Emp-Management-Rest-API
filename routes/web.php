@@ -29,6 +29,7 @@ $router->group(['prefix'=>'api/employee'], function() use ($router){
 
 $router->group(['middleware' => 'auth:api'],function() use ($router){
     $router->post('api/employee/addEmployee', 'EmployeeController@addEmployee');
+    $router->post('api/employee/updateEmpProfilePic/{id}', 'EmployeeController@updateEmpProfilePic');
 });
 
 

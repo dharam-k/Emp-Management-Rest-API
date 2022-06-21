@@ -48,7 +48,7 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'profile_pic' => 'mimes:jpeg,bmp,png,jpg|required',
+            'profile_pic' => 'mimes:jpeg,png,jpg|required',
             'email' => 'required|string',
             'phone_number' => 'required|numeric',
             'hire_date' => 'required|string',
@@ -80,6 +80,30 @@ class EmployeeController extends Controller
         ]);
 
         return response()->json(['message'=> 'Employee has been created']);
+    }
+
+    public function updateEmpProfilePic(Request $request, $id){
+
+        $this->validate($request,[
+            'profile_pic' => 'mimes:jpeg,png,jpg|required',
+        ]);
+
+        if( $request->hasFile('profile_pic') ) {
+            $destinationPath = storage_path( 'app/public/profile_pic' );
+            $file = $request->profile_pic;
+            $fileName = time() . '.'.$file->clientExtension();
+            $file->move( $destinationPath, $fileName );
+        }
+
+        if(Employee::where('employee_id', '=', $id)->exists()){
+            DB::table('employees')
+                ->where('employee_id', $id)
+                ->update(['profile_pic' => $fileName]);
+
+            return response()->json(['message'=> 'Profile Pic has been updated']);
+        }else{
+            return response()->json(['message'=> 'Employee ID does not exixts']);
+        }
     }
 
 }

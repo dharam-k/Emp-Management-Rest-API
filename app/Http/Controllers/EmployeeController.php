@@ -5,12 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class EmployeeController extends Controller
 {
 
 
     public function allEmployeeDetails(){
+
+        //Cache::put('employeeDetail', Employee::all(), $second=100);
+        //Cache::put('employeeDetail', Employee::all(), now()->addMinutes(1));
+
+        // Cache::remember('employeeDetail', 5, function () {
+        //     return Employee::all();
+        // });
+
+        //return Cache::get('employeeDetail');
+
         return Employee::all();
     }
 
@@ -93,6 +104,9 @@ class EmployeeController extends Controller
             $file = $request->profile_pic;
             $fileName = time() . '.'.$file->clientExtension();
             $file->move( $destinationPath, $fileName );
+
+
+            //$fileName = time().'_'.$req->file->getClientOriginalName();
         }
 
         if(Employee::where('employee_id', '=', $id)->exists()){

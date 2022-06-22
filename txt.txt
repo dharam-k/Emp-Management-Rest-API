@@ -45,3 +45,50 @@ CREATE TABLE countries (
 	region_id INT (11) NOT NULL,
 	FOREIGN KEY (region_id) REFERENCES regions (region_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+
+**EDIT**
+$destinationPath = storage_path().'/uploads/';
+or
+$destinationPath = public_path().'/uploads/';
+
+//storage_path will give the fully qualified path to the storage folder
+//public_path will give the fully qualified path to the public folder
+//uploads - is the folder name where you want to store the user uploaded files, could be any name you prefer.
+**EDIT end**
+
+// Retrieving An Uploaded File
+$file = Input::file('image');
+
+// Determining If A File Was Uploaded
+if (Input::hasFile('image'))
+{
+    //
+}
+
+// Determining If An Uploaded File Is Valid
+if (Input::file('image')->isValid())
+{
+    //
+}
+
+// Moving An Uploaded File
+Input::file('image')->move($destinationPath);
+Input::file('image')->move($destinationPath, $fileName); //$filename is the name by which you want to store the file - change the name if required by by app.
+
+// Getting Requested file path
+$path = Input::file('image')->getRealPath();
+
+// Getting Original name of the file
+//**Edit** - gives the original filename as on uploading user's system. **Edit end**
+$name = Input::file('image')->getClientOriginalName();
+
+// Getting uploaded File extention
+$extension = Input::file('image')->getClientOriginalExtension();
+
+// Getting Size of the file
+$size = Input::file('image')->getSize();
+
+// Getting MIME Type of uploaded file
+$mime = Input::file('image')->getMimeType();  
